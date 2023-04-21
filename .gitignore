@@ -1,3 +1,10 @@
 x64
 .vs
 Obj/
+
+# Visual Studio build files
+*.vcxproj
+*.vcxproj.user
+*.vcxproj.filters
+*.sln
+*.lua
