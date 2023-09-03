@@ -466,17 +466,6 @@ void ZipArchiveEntry::UnsetCompressionStream()
 	this->SetPassword(std::string());
 }
 
-void ZipArchiveEntry::Remove()
-{
-	auto it = std::find(_archive->_entries.begin(), _archive->_entries.end(), this->shared_from_this());
-
-	if (it != _archive->_entries.end())
-	{
-		_archive->_entries.erase(it);
-		delete this;
-	}
-}
-
 //////////////////////////////////////////////////////////////////////////
 // private getters & setters
 

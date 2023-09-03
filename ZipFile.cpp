@@ -54,14 +54,14 @@ ZipArchive::Ptr ZipFile::Open(const std::string& zipPath)
 	return ZipArchive::Create(zipFile, true);
 }
 
-void ZipFile::Save(ZipArchive::Ptr zipArchive, const std::string& zipPath)
+void ZipFile::Save(ZipArchive::Ptr& zipArchive, const std::string& zipPath)
 {
 	ZipFile::SaveAndClose(zipArchive, zipPath);
 
 	zipArchive = ZipFile::Open(zipPath);
 }
 
-void ZipFile::SaveAndClose(ZipArchive::Ptr zipArchive, const std::string& zipPath)
+void ZipFile::SaveAndClose(ZipArchive::Ptr& zipArchive, const std::string& zipPath)
 {
 	// check if file exist
 	std::string tempZipPath = MakeTempFilename(zipPath);
@@ -77,6 +77,7 @@ void ZipFile::SaveAndClose(ZipArchive::Ptr zipArchive, const std::string& zipPat
 	outZipFile.close();
 
 	zipArchive->InternalDestroy();
+	zipArchive = nullptr;
 
 	fs::remove(zipPath);
 	fs::rename(tempZipPath, zipPath);

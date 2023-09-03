@@ -51,7 +51,6 @@ ZipArchive::Ptr ZipArchive::Create(std::istream* stream, bool takeOwnership)
 	result->_zipStream = stream;
 	result->_owningStream = stream != nullptr ? takeOwnership : false;
 
-	// jesus blew up a school bus when this metod has been implemented
 	if (stream != nullptr)
 	{
 		result->ReadEndOfCentralDirectory();
@@ -91,11 +90,11 @@ ZipArchiveEntry::Ptr ZipArchive::CreateEntry(const std::string& fileName)
 {
 	ZipArchiveEntry::Ptr result = nullptr;
 
-	if (this->GetEntry(fileName) == nullptr)
+	if (!_entries.contains(fileName))
 	{
 		if ((result = ZipArchiveEntry::CreateNew(this, fileName)) != nullptr)
 		{
-			_entries.push_back(result);
+			_entries.emplace(result->GetFullName(), result);
 		}
 	}
 
@@ -112,42 +111,17 @@ void ZipArchive::SetComment(const std::string& comment)
 	_endOfCentralDirectoryBlock.Comment = comment;
 }
 
-ZipArchiveEntry::Ptr ZipArchive::GetEntry(int index)
+ZipArchiveEntry* ZipArchive::GetEntry(const std::string& entryName)
 {
-	return _entries[index];
-}
-
-ZipArchiveEntry::Ptr ZipArchive::GetEntry(const std::string& entryName)
-{
-	auto it = std::find_if(_entries.begin(), _entries.end(), [&entryName](ZipArchiveEntry::Ptr& value) { return value->GetFullName() == entryName; });
-
-	if (it != _entries.end())
-	{
-		return *it;
-	}
-
-	return nullptr;
-}
-
-size_t ZipArchive::GetEntriesCount() const
-{
-	return _entries.size();
+	auto it = _entries.find(entryName);
+	return it != _entries.end() ? it->second.get() : nullptr;
 }
 
 void ZipArchive::RemoveEntry(const std::string& entryName)
 {
-	auto it = std::find_if(_entries.begin(), _entries.end(), [&entryName](ZipArchiveEntry::Ptr& value) { return value->GetFullName() == entryName; });
-
-	if (it != _entries.end())
-	{
-		_entries.erase(it);
-	}
+	_entries.erase(entryName);
 }
 
-void ZipArchive::RemoveEntry(int index)
-{
-	_entries.erase(_entries.begin() + index);
-}
 
 bool ZipArchive::EnsureCentralDirectoryRead()
 {
@@ -161,7 +135,7 @@ bool ZipArchive::EnsureCentralDirectoryRead()
 
 		if ((newEntry = ZipArchiveEntry::CreateExisting(this, zipCentralDirectoryFileHeader)) != nullptr)
 		{
-			_entries.push_back(newEntry);
+			_entries.emplace(newEntry->GetFullName(), std::move(newEntry));
 		}
 
 		// ensure clearing of the CDFH struct
@@ -215,13 +189,13 @@ void ZipArchive::WriteToStream(std::ostream& stream)
 {
 	auto startPosition = stream.tellp();
 
-	for (auto& entry : _entries)
+	for (auto& [entryName, entry] : _entries)
 	{
 		entry->SerializeLocalFileHeader(stream);
 	}
 
 	auto offsetOfStartOfCDFH = stream.tellp() - startPosition;
-	for (auto& entry : _entries)
+	for (auto& [entryName, entry] : _entries)
 	{
 		entry->SerializeCentralDirectoryFileHeader(stream);
 	}

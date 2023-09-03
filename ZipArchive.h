@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <atomic>
 #include <memory>
+#include <unordered_map>
 
 /**
  * \brief Represents a package of compressed files in the zip archive format.
@@ -86,29 +87,25 @@ public:
 	void SetComment(const std::string& comment);
 
 	/**
-	 * \brief Gets a pointer to the zip entry located on the given index.
-	 *
-	 * \param index Zero-based index of the.
-	 *
-	 * \return  null if it fails, else the entry.
-	 */
-	ZipArchiveEntry::Ptr GetEntry(int index);
-
-	/**
 	 * \brief Gets a const pointer to the zip entry with given file name.
 	 *
 	 * \param entryName Name of the entry.
 	 *
 	 * \return  null if it fails, else the entry.
 	 */
-	ZipArchiveEntry::Ptr GetEntry(const std::string& entryName);
+	ZipArchiveEntry* GetEntry(const std::string& entryName);
 
 	/**
-	 * \brief Gets the number of the zip entries in this archive.
+	 * \brief Gets a pointer to the zip entry located on the given index.
 	 *
-	 * \return  The number of the zip entries in this archive.
+	 * \param index Zero-based index of the.
+	 *
+	 * \return  null if it fails, else the entry.
 	 */
-	size_t GetEntriesCount() const;
+	const auto& GetEntries() const
+	{
+		return _entries;
+	}
 
 	/**
 	 * \brief Removes the entry by the file name.
@@ -116,13 +113,6 @@ public:
 	 * \param entryName Name of the entry.
 	 */
 	void RemoveEntry(const std::string& entryName);
-
-	/**
-	* \brief Removes the entry by the index.
-	 *
-	 * \param index Zero-based index of the.
-	 */
-	void RemoveEntry(int index);
 
 	/**
 	 * \brief Writes the zip archive content to the stream. It must be seekable.
@@ -156,7 +146,7 @@ private:
 	void InternalDestroy();
 
 	detail::EndOfCentralDirectoryBlock _endOfCentralDirectoryBlock;
-	std::vector<ZipArchiveEntry::Ptr> _entries;
+	std::unordered_map<std::string, ZipArchiveEntry::Ptr> _entries;
 	std::istream* _zipStream;
 	bool _owningStream;
 };
