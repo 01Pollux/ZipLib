@@ -123,23 +123,23 @@ Stop_Compiling_Bad_Endian
 
 typedef struct
 {
-  UInt32 maxFunc;
-  UInt32 vendor[3];
-  UInt32 ver;
-  UInt32 b;
-  UInt32 c;
-  UInt32 d;
+	UInt32 maxFunc;
+	UInt32 vendor[3];
+	UInt32 ver;
+	UInt32 b;
+	UInt32 c;
+	UInt32 d;
 } Cx86cpuid;
 
 enum
 {
-  CPU_FIRM_INTEL,
-  CPU_FIRM_AMD,
-  CPU_FIRM_VIA
+	CPU_FIRM_INTEL,
+	CPU_FIRM_AMD,
+	CPU_FIRM_VIA
 };
 
-Bool x86cpuid_CheckAndRead(Cx86cpuid *p);
-int x86cpuid_GetFirm(const Cx86cpuid *p);
+Bool x86cpuid_CheckAndRead(Cx86cpuid* p);
+int x86cpuid_GetFirm(const Cx86cpuid* p);
 
 #define x86cpuid_GetFamily(p) (((p)->ver >> 8) & 0xFF00F)
 #define x86cpuid_GetModel(p) (((p)->ver >> 4) & 0xF00F)

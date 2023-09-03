@@ -8,3 +8,7 @@ Obj/
 *.vcxproj.filters
 *.sln
 *.lua
+/ZipLib.sln
+/ZipLib.vcxproj
+/ZipLib.vcxproj.filters
+/ZipLib.vcxproj.user

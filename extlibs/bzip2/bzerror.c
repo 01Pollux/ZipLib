@@ -4,5 +4,5 @@
 
 void bz_internal_error(int errcode)
 {
-  assert(0);
+	assert(0);
 }

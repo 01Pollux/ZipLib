@@ -3,7 +3,7 @@
  * For conditions of distribution and use, see copyright notice in zlib.h
  */
 
-/* @(#) $Id$ */
+ /* @(#) $Id$ */
 
 #ifndef ZCONF_H
 #define ZCONF_H
@@ -17,7 +17,7 @@
 #ifdef Z_PREFIX     /* may be set to #if 1 by ./configure */
 #  define Z_PREFIX_SET
 
-/* all linked symbols */
+ /* all linked symbols */
 #  define _dist_code            z__dist_code
 #  define _length_code          z__length_code
 #  define _tr_align             z__tr_align
@@ -221,7 +221,7 @@
 #  define z_const
 #endif
 
-/* Some Mac compilers merge all .h files incorrectly: */
+ /* Some Mac compilers merge all .h files incorrectly: */
 #if defined(__MWERKS__)||defined(applec)||defined(THINK_C)||defined(__SC__)
 #  define NO_DUMMY_DECL
 #endif
@@ -244,20 +244,20 @@
 #  define MAX_WBITS   15 /* 32K LZ77 window */
 #endif
 
-/* The memory requirements for deflate are (in bytes):
-            (1 << (windowBits+2)) +  (1 << (memLevel+9))
- that is: 128K for windowBits=15  +  128K for memLevel = 8  (default values)
- plus a few kilobytes for small objects. For example, if you want to reduce
- the default memory requirements from 256K to 128K, compile with
-     make CFLAGS="-O -DMAX_WBITS=14 -DMAX_MEM_LEVEL=7"
- Of course this will generally degrade compression (there's no free lunch).
+ /* The memory requirements for deflate are (in bytes):
+			 (1 << (windowBits+2)) +  (1 << (memLevel+9))
+  that is: 128K for windowBits=15  +  128K for memLevel = 8  (default values)
+  plus a few kilobytes for small objects. For example, if you want to reduce
+  the default memory requirements from 256K to 128K, compile with
+	  make CFLAGS="-O -DMAX_WBITS=14 -DMAX_MEM_LEVEL=7"
+  Of course this will generally degrade compression (there's no free lunch).
 
-   The memory requirements for inflate are (in bytes) 1 << windowBits
- that is, 32K for windowBits=15 (default value) plus a few kilobytes
- for small objects.
-*/
+	The memory requirements for inflate are (in bytes) 1 << windowBits
+  that is, 32K for windowBits=15 (default value) plus a few kilobytes
+  for small objects.
+ */
 
-                        /* Type declarations */
+ /* Type declarations */
 
 #ifndef OF /* function prototypes */
 #  ifdef STDC
@@ -283,7 +283,7 @@
  */
 #ifdef SYS16BIT
 #  if defined(M_I86SM) || defined(M_I86MM)
-     /* MSC small or medium model */
+ /* MSC small or medium model */
 #    define SMALL_MEDIUM
 #    ifdef _MSC_VER
 #      define FAR _far
@@ -292,7 +292,7 @@
 #    endif
 #  endif
 #  if (defined(__SMALL__) || defined(__MEDIUM__))
-     /* Turbo C small or medium model */
+	 /* Turbo C small or medium model */
 #    define SMALL_MEDIUM
 #    ifdef __BORLANDC__
 #      define FAR _far
@@ -304,8 +304,8 @@
 
 #if defined(WINDOWS) || defined(WIN32)
    /* If building or using zlib as a DLL, define ZLIB_DLL.
-    * This is not mandatory, but it offers a little performance increase.
-    */
+	* This is not mandatory, but it offers a little performance increase.
+	*/
 #  ifdef ZLIB_DLL
 #    if defined(WIN32) && (!defined(__BORLANDC__) || (__BORLANDC__ >= 0x500))
 #      ifdef ZLIB_INTERNAL
@@ -315,17 +315,17 @@
 #      endif
 #    endif
 #  endif  /* ZLIB_DLL */
-   /* If building or using zlib with the WINAPI/WINAPIV calling convention,
-    * define ZLIB_WINAPI.
-    * Caution: the standard ZLIB1.DLL is NOT compiled using ZLIB_WINAPI.
-    */
+	/* If building or using zlib with the WINAPI/WINAPIV calling convention,
+	 * define ZLIB_WINAPI.
+	 * Caution: the standard ZLIB1.DLL is NOT compiled using ZLIB_WINAPI.
+	 */
 #  ifdef ZLIB_WINAPI
 #    ifdef FAR
 #      undef FAR
 #    endif
 #    include <windows.h>
-     /* No need for _export, use ZLIB.DEF instead. */
-     /* For complete Windows compatibility, use WINAPI, not __stdcall. */
+	 /* No need for _export, use ZLIB.DEF instead. */
+	 /* For complete Windows compatibility, use WINAPI, not __stdcall. */
 #    define ZEXPORT WINAPI
 #    ifdef WIN32
 #      define ZEXPORTVA WINAPIV
@@ -368,10 +368,10 @@ typedef unsigned int   uInt;  /* 16 bits or more */
 typedef unsigned long  uLong; /* 32 bits or more */
 
 #ifdef SMALL_MEDIUM
-   /* Borland C/C++ and some old MSC versions ignore FAR inside typedef */
+/* Borland C/C++ and some old MSC versions ignore FAR inside typedef */
 #  define Bytef Byte FAR
 #else
-   typedef Byte  FAR Bytef;
+typedef Byte  FAR Bytef;
 #endif
 typedef char  FAR charf;
 typedef int   FAR intf;
@@ -379,13 +379,13 @@ typedef uInt  FAR uIntf;
 typedef uLong FAR uLongf;
 
 #ifdef STDC
-   typedef void const *voidpc;
-   typedef void FAR   *voidpf;
-   typedef void       *voidp;
+typedef void const* voidpc;
+typedef void FAR* voidpf;
+typedef void* voidp;
 #else
-   typedef Byte const *voidpc;
-   typedef Byte FAR   *voidpf;
-   typedef Byte       *voidp;
+typedef Byte const* voidpc;
+typedef Byte FAR* voidpf;
+typedef Byte* voidp;
 #endif
 
 /* ./configure may #define Z_U4 here */
@@ -406,9 +406,9 @@ typedef uLong FAR uLongf;
 #endif
 
 #ifdef Z_U4
-   typedef Z_U4 z_crc_t;
+typedef Z_U4 z_crc_t;
 #else
-   typedef unsigned long z_crc_t;
+typedef unsigned long z_crc_t;
 #endif
 
 #ifdef HAVE_UNISTD_H    /* may be set to #if 1 by ./configure */
@@ -486,21 +486,21 @@ typedef uLong FAR uLongf;
 #  endif
 #endif
 
-/* MVS linker does not support external names larger than 8 bytes */
+ /* MVS linker does not support external names larger than 8 bytes */
 #if defined(__MVS__)
-  #pragma map(deflateInit_,"DEIN")
-  #pragma map(deflateInit2_,"DEIN2")
-  #pragma map(deflateEnd,"DEEND")
-  #pragma map(deflateBound,"DEBND")
-  #pragma map(inflateInit_,"ININ")
-  #pragma map(inflateInit2_,"ININ2")
-  #pragma map(inflateEnd,"INEND")
-  #pragma map(inflateSync,"INSY")
-  #pragma map(inflateSetDictionary,"INSEDI")
-  #pragma map(compressBound,"CMBND")
-  #pragma map(inflate_table,"INTABL")
-  #pragma map(inflate_fast,"INFA")
-  #pragma map(inflate_copyright,"INCOPY")
+#pragma map(deflateInit_,"DEIN")
+#pragma map(deflateInit2_,"DEIN2")
+#pragma map(deflateEnd,"DEEND")
+#pragma map(deflateBound,"DEBND")
+#pragma map(inflateInit_,"ININ")
+#pragma map(inflateInit2_,"ININ2")
+#pragma map(inflateEnd,"INEND")
+#pragma map(inflateSync,"INSY")
+#pragma map(inflateSetDictionary,"INSEDI")
+#pragma map(compressBound,"CMBND")
+#pragma map(inflate_table,"INTABL")
+#pragma map(inflate_fast,"INFA")
+#pragma map(inflate_copyright,"INCOPY")
 #endif
 
 #endif /* ZCONF_H */

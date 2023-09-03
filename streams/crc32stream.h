@@ -7,39 +7,39 @@
  */
 template <typename ELEM_TYPE, typename TRAITS_TYPE>
 class basic_crc32stream
-  : public std::basic_istream<ELEM_TYPE, TRAITS_TYPE>
+	: public std::basic_istream<ELEM_TYPE, TRAITS_TYPE>
 {
-  public:
-    basic_crc32stream()
-      : std::basic_istream<ELEM_TYPE, TRAITS_TYPE>(&_crc32Streambuf)
-    {
+public:
+	basic_crc32stream()
+		: std::basic_istream<ELEM_TYPE, TRAITS_TYPE>(&_crc32Streambuf)
+	{
 
-    }
+	}
 
-    basic_crc32stream(std::basic_istream<ELEM_TYPE, TRAITS_TYPE>* stream)
-      : std::basic_istream<ELEM_TYPE, TRAITS_TYPE>(&_crc32Streambuf)
-      , _crc32Streambuf(stream)
-    {
+	basic_crc32stream(std::basic_istream<ELEM_TYPE, TRAITS_TYPE>* stream)
+		: std::basic_istream<ELEM_TYPE, TRAITS_TYPE>(&_crc32Streambuf)
+		, _crc32Streambuf(stream)
+	{
 
-    }
+	}
 
-    void init(std::basic_istream<ELEM_TYPE, TRAITS_TYPE>& stream)
-    {
-      _crc32Streambuf.init(stream);
-    }
+	void init(std::basic_istream<ELEM_TYPE, TRAITS_TYPE>& stream)
+	{
+		_crc32Streambuf.init(stream);
+	}
 
-    size_t get_bytes_read() const
-    {
-      return _crc32Streambuf.get_bytes_read();
-    }
+	size_t get_bytes_read() const
+	{
+		return _crc32Streambuf.get_bytes_read();
+	}
 
-    uint32_t get_crc32() const
-    {
-      return _crc32Streambuf.get_crc32();
-    }
+	uint32_t get_crc32() const
+	{
+		return _crc32Streambuf.get_crc32();
+	}
 
-  private:
-    crc32_streambuf<ELEM_TYPE, TRAITS_TYPE> _crc32Streambuf;
+private:
+	crc32_streambuf<ELEM_TYPE, TRAITS_TYPE> _crc32Streambuf;
 };
 
 //////////////////////////////////////////////////////////////////////////
