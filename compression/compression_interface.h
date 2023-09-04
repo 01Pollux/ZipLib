@@ -4,6 +4,7 @@
 
 struct compression_properties_interface
 {
+	virtual ~compression_properties_interface() { }
 	virtual void normalize() = 0;
 };
 

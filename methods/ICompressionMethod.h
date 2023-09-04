@@ -82,6 +82,8 @@ public:
 	encoder_t GetEncoder() const { return _encoder; }
 	decoder_t GetDecoder() const { return _decoder; }
 
+	virtual ~ICompressionMethod() = default;
+
 	virtual compression_encoder_properties_interface& GetEncoderProperties() = 0;
 	virtual compression_decoder_properties_interface& GetDecoderProperties() = 0;
 
