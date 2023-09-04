@@ -49,6 +49,8 @@ public:
 	 */
 	static ZipArchive::Ptr Create(std::istream* stream, bool takeOwnership);
 
+	ZipArchive();
+
 	/**
 	 * \brief Destructor.
 	 */
@@ -129,7 +131,6 @@ public:
 	void Swap(ZipArchive::Ptr other);
 
 private:
-	ZipArchive();
 	ZipArchive(const ZipArchive&);
 	ZipArchive& operator = (const ZipArchive& other);
 

@@ -35,19 +35,26 @@ ZipArchive::Ptr ZipFile::Open(const std::string& zipPath, bool CreateIfMissing)
 	auto zipFile = std::make_unique<std::ifstream>();
 	zipFile->open(zipPath, std::ios::binary);
 
-	if (!zipFile->is_open() && CreateIfMissing)
+	if (!zipFile->is_open())
 	{
-		// if file does not exist, try to create it
-		std::ofstream tmpFile;
-		tmpFile.open(zipPath, std::ios::binary);
-		tmpFile.close();
-
-		zipFile->open(zipPath, std::ios::binary);
-
-		// if attempt to create file failed, throw an exception
-		if (!zipFile->is_open())
+		if (CreateIfMissing)
 		{
-			throw std::runtime_error("cannot open zip file");
+			// if file does not exist, try to create it
+			std::ofstream tmpFile;
+			tmpFile.open(zipPath, std::ios::binary);
+			tmpFile.close();
+
+			zipFile->open(zipPath, std::ios::binary);
+
+			// if attempt to create file failed, throw an exception
+			if (!zipFile->is_open())
+			{
+				throw std::runtime_error("cannot open zip file");
+			}
+		}
+		else
+		{
+			return nullptr;
 		}
 	}
 

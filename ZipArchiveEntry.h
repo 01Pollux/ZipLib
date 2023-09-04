@@ -61,6 +61,8 @@ public:
 	MARK_AS_TYPED_ENUMFLAGS_FRIEND(Attributes);
 	MARK_AS_TYPED_ENUMFLAGS_FRIEND(CompressionMode);
 
+	ZipArchiveEntry();
+
 	/**
 	 * \brief Destructor.
 	 */
@@ -314,7 +316,6 @@ private:
 
 	MARK_AS_TYPED_ENUMFLAGS_FRIEND(BitFlag);
 
-	ZipArchiveEntry();
 	ZipArchiveEntry(const ZipArchiveEntry&);
 	ZipArchiveEntry& operator = (ZipArchiveEntry&);
 
