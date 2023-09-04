@@ -12,12 +12,12 @@
 
 ZipArchive::Ptr ZipArchive::Create()
 {
-	return ZipArchive::Ptr(new ZipArchive());
+	return std::make_shared<ZipArchive>();
 }
 
 ZipArchive::Ptr ZipArchive::Create(ZipArchive::Ptr&& other)
 {
-	ZipArchive::Ptr result(new ZipArchive());
+	auto result = Create();
 
 	result->_endOfCentralDirectoryBlock = other->_endOfCentralDirectoryBlock;
 	result->_entries = std::move(other->_entries);
@@ -33,7 +33,7 @@ ZipArchive::Ptr ZipArchive::Create(ZipArchive::Ptr&& other)
 
 ZipArchive::Ptr ZipArchive::Create(std::istream& stream)
 {
-	ZipArchive::Ptr result(new ZipArchive());
+	auto result = Create();
 
 	result->_zipStream = &stream;
 	result->_owningStream = false;
@@ -46,7 +46,7 @@ ZipArchive::Ptr ZipArchive::Create(std::istream& stream)
 
 ZipArchive::Ptr ZipArchive::Create(std::istream* stream, bool takeOwnership)
 {
-	ZipArchive::Ptr result(new ZipArchive());
+	auto result = Create();
 
 	result->_zipStream = stream;
 	result->_owningStream = stream != nullptr ? takeOwnership : false;

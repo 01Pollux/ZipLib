@@ -30,12 +30,12 @@ namespace
 	}
 }
 
-ZipArchive::Ptr ZipFile::Open(const std::string& zipPath)
+ZipArchive::Ptr ZipFile::Open(const std::string& zipPath, bool CreateIfMissing)
 {
-	std::ifstream* zipFile = new std::ifstream();
+	auto zipFile = std::make_unique<std::ifstream>();
 	zipFile->open(zipPath, std::ios::binary);
 
-	if (!zipFile->is_open())
+	if (!zipFile->is_open() && CreateIfMissing)
 	{
 		// if file does not exist, try to create it
 		std::ofstream tmpFile;
@@ -51,7 +51,7 @@ ZipArchive::Ptr ZipFile::Open(const std::string& zipPath)
 		}
 	}
 
-	return ZipArchive::Create(zipFile, true);
+	return ZipArchive::Create(zipFile.release(), true);
 }
 
 void ZipFile::Save(ZipArchive::Ptr& zipArchive, const std::string& zipPath)
@@ -175,14 +175,6 @@ void ZipFile::ExtractEncryptedFile(const std::string& zipPath, const std::string
 {
 	ZipArchive::Ptr zipArchive = ZipFile::Open(zipPath);
 
-	std::ofstream destFile;
-	destFile.open(destinationPath, std::ios::binary | std::ios::trunc);
-
-	if (!destFile.is_open())
-	{
-		throw std::runtime_error("cannot create destination file");
-	}
-
 	auto entry = zipArchive->GetEntry(fileName);
 
 	if (entry == nullptr)
@@ -200,6 +192,14 @@ void ZipFile::ExtractEncryptedFile(const std::string& zipPath, const std::string
 	if (dataStream == nullptr)
 	{
 		throw std::runtime_error("wrong password");
+	}
+
+	std::ofstream destFile;
+	destFile.open(destinationPath, std::ios::binary | std::ios::trunc);
+
+	if (!destFile.is_open())
+	{
+		throw std::runtime_error("cannot create destination file");
 	}
 
 	utils::stream::copy(*dataStream, destFile);

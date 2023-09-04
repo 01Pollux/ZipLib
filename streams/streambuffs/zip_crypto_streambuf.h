@@ -186,11 +186,11 @@ private:
 
 		// make encryption header
 		auto seed = std::chrono::system_clock::now().time_since_epoch().count();
-		std::mt19937 generator(static_cast<uint32_t>(seed));
+		auto generator = std::make_unique<std::mt19937>(static_cast<uint32_t>(seed));
 
-		_encryptionHeader.u32[0] = generator();
-		_encryptionHeader.u32[1] = generator();
-		_encryptionHeader.u32[2] = generator();
+		_encryptionHeader.u32[0] = (*generator)();
+		_encryptionHeader.u32[1] = (*generator)();
+		_encryptionHeader.u32[2] = (*generator)();
 
 		// set stream buffer
 		_internalBuffer = new ELEM_TYPE[INTERNAL_BUFFER_SIZE];

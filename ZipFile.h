@@ -21,7 +21,7 @@ public:
 	 *
 	 * \return The ZipArchive instance.
 	 */
-	static ZipArchive::Ptr Open(const std::string& zipPath);
+	static ZipArchive::Ptr Open(const std::string& zipPath, bool CreateIfMissing = true);
 
 	/**
 	 * \brief Saves the zip archive file with the given filename.

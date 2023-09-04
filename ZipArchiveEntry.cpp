@@ -91,7 +91,7 @@ ZipArchiveEntry::Ptr ZipArchiveEntry::CreateNew(ZipArchive* zipArchive, const st
 
 	if (IsValidFilename(fullPath))
 	{
-		result.reset(new ZipArchiveEntry());
+		result = std::make_shared<ZipArchiveEntry>();
 
 		result->_archive = zipArchive;
 		result->_isNewOrChanged = true;
@@ -117,7 +117,7 @@ ZipArchiveEntry::Ptr ZipArchiveEntry::CreateExisting(ZipArchive* zipArchive, det
 
 	if (IsValidFilename(cd.Filename))
 	{
-		result.reset(new ZipArchiveEntry());
+		result = std::make_shared<ZipArchiveEntry>();
 
 		result->_archive = zipArchive;
 		result->_centralDirectoryFileHeader = cd;
@@ -695,7 +695,7 @@ void ZipArchiveEntry::InternalCompressStream(std::istream& inputStream, std::ost
 		this->SetGeneralPurposeBitFlag(BitFlag::Encrypted);
 
 		// std::make_unique<zip_cryptostream>();
-		cryptoStream = std::unique_ptr<zip_cryptostream>(new zip_cryptostream());
+		cryptoStream = std::make_unique<zip_cryptostream>();
 
 		cryptoStream->init(outputStream, _password.c_str());
 		cryptoStream->set_final_byte(this->GetLastByteOfEncryptionHeader());
